@@ -1,7 +1,5 @@
 import type { AWS } from '@serverless/typescript';
 
-import hello from '@functions/hello';
-
 const serverlessConfiguration: AWS = {
   service: 'serverless-finance',
   frameworkVersion: '3',
@@ -17,9 +15,26 @@ const serverlessConfiguration: AWS = {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
     },
+    iamRoleStatements: [
+      {
+        Effect: "Allow",
+        Action: ["dynamodb:*"],
+        Resource: ["*"]
+      }
+    ],
   },
-  // import the function via paths
-  functions: { hello },
+  functions: {
+    createClient: {
+      handler: "./src/main/functions/create-client.createClient",
+      events: [{
+        http: {
+          path: "createClient",
+          method: "post",
+          cors: true
+        }
+      }]
+    }
+  },
   package: { individually: true },
   custom: {
     esbuild: {
@@ -33,6 +48,32 @@ const serverlessConfiguration: AWS = {
       concurrency: 10,
     },
   },
+  resources: {
+    Resources: {
+      clientsTable: {
+        Type: "AWS::DynamoDB::Table",
+        Properties: {
+          TableName: "clients",
+          ProvisionedThroughput: {
+            ReadCapacityUnits: 5,
+            WriteCapacityUnits: 5
+          },
+          AttributeDefinitions: [
+            {
+              AttributeName: "id",
+              AttributeType: "S"
+            }
+          ],
+          KeySchema: [
+            {
+              AttributeName: "id",
+              KeyType: "HASH"
+            }
+          ]
+        }
+      }
+    }
+  }
 };
 
 module.exports = serverlessConfiguration;
