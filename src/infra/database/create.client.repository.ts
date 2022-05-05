@@ -12,6 +12,7 @@ export class CreateClientRepository implements ICreateClientRepository {
       TableName: "clients",
       Item: {
         id: randomUUID(),
+        password: hashedPassword,
         ...clientData
       }
     })
