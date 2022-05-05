@@ -1,5 +1,4 @@
 import { ICreateClientRepository } from "src/data/contracts"
-import { Client } from "src/domain/models"
 import { Controller, HttpResponse } from "src/presentation/contracts"
 import { created, serverError } from "src/presentation/helpers"
 
@@ -8,9 +7,11 @@ export class CreateClientController implements Controller {
 
   async handler(event: any): Promise<HttpResponse> {
     try {
-      const requestBody = JSON.parse(event.body) as Client.Params
+      const { name, email, password } = JSON.parse(event.body)
       await this.createClientRepository.create({
-        ...requestBody
+        name,
+        email,
+        password
       })
       return created()
     } catch (error) {
