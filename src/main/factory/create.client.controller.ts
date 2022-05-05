@@ -1,5 +1,5 @@
-import { CreateClientRepository } from "src/infra/create-client-repository"
-import { CreateClientController } from "src/presentation/controllers/create.client"
+import { CreateClientRepository } from "src/infra/database"
+import { CreateClientController } from "src/presentation/controllers"
 
 export const makeCreateClientController = () => {
   const createCLientRepository = new CreateClientRepository()

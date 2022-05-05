@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
+import { ICreateClientRepository } from "src/data/contracts/create.client.repository";
 import { Client } from "src/domain/models";
-import { document } from "./dynamodb.client"
-import { ICreateClientRepository } from "./protocols/create.client.repository";
+import { document } from "src/infra/database"
 
 export class CreateClientRepository implements ICreateClientRepository {
   async create(clientData: Client.Params): Promise<void> {
@@ -9,6 +9,7 @@ export class CreateClientRepository implements ICreateClientRepository {
       TableName: "clients",
       Item: {
         id: randomUUID(),
+        password: "",
         ...clientData
       }
     })
