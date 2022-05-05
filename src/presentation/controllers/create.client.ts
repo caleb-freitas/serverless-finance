@@ -1,14 +1,7 @@
+import { ICreateClientRepository } from "src/data/contracts"
 import { Client } from "src/domain/models"
-import { ICreateClientRepository } from "src/infra/protocols/create.client.repository"
-
-interface HttpResponse {
-  statusCode: number
-  body?: any
-}
-
-interface Controller {
-  handler(event: any): Promise<HttpResponse>
-}
+import { Controller, HttpResponse } from "src/presentation/contracts"
+import { created, serverError } from "src/presentation/helpers"
 
 export class CreateClientController implements Controller {
   constructor(private readonly createClientRepository: ICreateClientRepository) {}
@@ -19,17 +12,9 @@ export class CreateClientController implements Controller {
       await this.createClientRepository.create({
         ...requestBody
       })
-      return {
-        statusCode: 200,
-      }
+      return created()
     } catch (error) {
-      return {
-        statusCode: 500,
-        body: {
-          message: "something bad happen"
-        }
-      }
+      return serverError(error)
     }
-
   }
 }
