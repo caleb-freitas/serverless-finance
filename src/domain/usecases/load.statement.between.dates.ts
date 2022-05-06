@@ -1,4 +1,4 @@
-import { Statement } from "../models";
+import { Statement } from "@domain/models"
 
 export type LoadStatementParams = {
   startDate: string

@@ -1,4 +1,4 @@
-import { HttpResponse } from "src/presentation/contracts"
+import { HttpResponse } from "@presentation/contracts"
 
 export const serverError = (error: Error): HttpResponse => ({
   statusCode: 500,
