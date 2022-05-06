@@ -7,11 +7,9 @@ export class CreateClientController implements Controller {
 
   async handler(event: any): Promise<HttpResponse> {
     try {
-      const { name, email, password } = JSON.parse(event.body)
+      const requestBody = JSON.parse(event.body)
       await this.createClientRepository.create({
-        name,
-        email,
-        password
+        ...requestBody
       })
       return created()
     } catch (error) {

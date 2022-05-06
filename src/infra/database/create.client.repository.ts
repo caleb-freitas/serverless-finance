@@ -6,8 +6,7 @@ import { document } from "src/infra/database"
 
 export class CreateClientRepository implements ICreateClientRepository {
   async create(clientData: Client.Params): Promise<void> {
-    const salt = 12
-    const hashedPassword = await hash(clientData.password, salt)
+    const hashedPassword = hash(clientData.password, 12)
     await document.put({
       TableName: "clients",
       Item: {
@@ -15,6 +14,6 @@ export class CreateClientRepository implements ICreateClientRepository {
         password: hashedPassword,
         ...clientData
       }
-    })
+    }).promise()
   }
 }

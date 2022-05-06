@@ -8,3 +8,8 @@ export const serverError = (error: Error): HttpResponse => ({
 export const created = (): HttpResponse => ({
   statusCode: 200,
 })
+
+export const ok = (data: any): HttpResponse => ({
+  statusCode: 201,
+  body: data
+})
