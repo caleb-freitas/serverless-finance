@@ -1,14 +1,14 @@
-import { ICreateStatementRepository } from "@data/contracts"
+import { ICreateStatement } from "@domain/usecases"
 import { Controller, HttpResponse } from "@presentation/contracts"
 import { created, serverError } from "@presentation/helpers"
 
 export class CreateStatementController implements Controller {
-  constructor(private readonly createStatementRepository: ICreateStatementRepository) {}
+  constructor(private readonly dbCreateStatement: ICreateStatement) {}
 
   async handler(event: any): Promise<HttpResponse> {
     try {
       const requestBody = JSON.parse(event.body)
-      await this.createStatementRepository.create({
+      await this.dbCreateStatement.create({
         ...requestBody
       })
       return created()
