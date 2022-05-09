@@ -25,15 +25,25 @@ const serverlessConfiguration: AWS = {
   },
   functions: {
     createClient: {
-      handler: "./src/main/functions/create-client.createClient",
+      handler: "./src/main/functions/create-client.handler",
       events: [{
         http: {
-          path: "createClient",
+          path: "client",
           method: "post",
           cors: true
         }
       }]
-    }
+    },
+    createStatement: {
+      handler: "./src/main/functions/create-statement.handler",
+      events: [{
+        http: {
+          path: "statement",
+          method: "post",
+          cors: true
+        }
+      }]
+    },
   },
   package: { individually: true },
   custom: {
@@ -54,6 +64,28 @@ const serverlessConfiguration: AWS = {
         Type: "AWS::DynamoDB::Table",
         Properties: {
           TableName: "clients",
+          ProvisionedThroughput: {
+            ReadCapacityUnits: 5,
+            WriteCapacityUnits: 5
+          },
+          AttributeDefinitions: [
+            {
+              AttributeName: "id",
+              AttributeType: "S"
+            }
+          ],
+          KeySchema: [
+            {
+              AttributeName: "id",
+              KeyType: "HASH"
+            }
+          ]
+        }
+      },
+      statementsTable: {
+        Type: "AWS::DynamoDB::Table",
+        Properties: {
+          TableName: "statements",
           ProvisionedThroughput: {
             ReadCapacityUnits: 5,
             WriteCapacityUnits: 5
