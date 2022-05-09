@@ -1,3 +1,3 @@
 import { DynamoDB } from "aws-sdk"
 
-export const document = new DynamoDB.DocumentClient()
+export const dynamodb = new DynamoDB.DocumentClient()
