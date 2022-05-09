@@ -6,7 +6,7 @@ export enum OperationType {
 export namespace Statement {
   export type Params = {
     clientId: string
-    description: string
+    description?: string
     amount: number
     type: OperationType
   }
@@ -19,5 +19,3 @@ export namespace Statement {
     createdAt: Date
   }
 }
-
-
