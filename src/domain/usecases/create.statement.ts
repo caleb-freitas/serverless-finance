@@ -1,5 +1,5 @@
 import { Statement } from "@domain/models";
 
-export interface CreateStatement {
-  create(statementData: Statement.Params): Promise<Statement.Model>
+export interface ICreateStatement {
+  create(statementData: Statement.Params): Promise<void>
 }
