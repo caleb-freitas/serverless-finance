@@ -1,3 +1,5 @@
+import { createClientFunction, createStatementFunction } from '@main/serverless/functions';
+import { dynamodbClientsTable, dynamodbStatementsTable } from '@main/serverless/resources';
 import type { AWS } from '@serverless/typescript';
 
 const serverlessConfiguration: AWS = {
@@ -24,26 +26,8 @@ const serverlessConfiguration: AWS = {
     ],
   },
   functions: {
-    createClient: {
-      handler: "./src/main/functions/create-client.handler",
-      events: [{
-        http: {
-          path: "client",
-          method: "post",
-          cors: true
-        }
-      }]
-    },
-    createStatement: {
-      handler: "./src/main/functions/create-statement.handler",
-      events: [{
-        http: {
-          path: "statement",
-          method: "post",
-          cors: true
-        }
-      }]
-    },
+    ...createClientFunction,
+    ...createStatementFunction
   },
   package: { individually: true },
   custom: {
@@ -60,50 +44,8 @@ const serverlessConfiguration: AWS = {
   },
   resources: {
     Resources: {
-      clientsTable: {
-        Type: "AWS::DynamoDB::Table",
-        Properties: {
-          TableName: "clients",
-          ProvisionedThroughput: {
-            ReadCapacityUnits: 5,
-            WriteCapacityUnits: 5
-          },
-          AttributeDefinitions: [
-            {
-              AttributeName: "id",
-              AttributeType: "S"
-            }
-          ],
-          KeySchema: [
-            {
-              AttributeName: "id",
-              KeyType: "HASH"
-            }
-          ]
-        }
-      },
-      statementsTable: {
-        Type: "AWS::DynamoDB::Table",
-        Properties: {
-          TableName: "statements",
-          ProvisionedThroughput: {
-            ReadCapacityUnits: 5,
-            WriteCapacityUnits: 5
-          },
-          AttributeDefinitions: [
-            {
-              AttributeName: "id",
-              AttributeType: "S"
-            }
-          ],
-          KeySchema: [
-            {
-              AttributeName: "id",
-              KeyType: "HASH"
-            }
-          ]
-        }
-      }
+      ...dynamodbClientsTable,
+      ...dynamodbStatementsTable
     }
   }
 };
