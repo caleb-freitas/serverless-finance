@@ -8,7 +8,9 @@ export class CreateStatementController implements Controller {
   async handler(event: any): Promise<HttpResponse> {
     try {
       const requestBody = JSON.parse(event.body)
+      const { clientId } = event.pathParameters
       await this.dbCreateStatement.create({
+        clientId,
         ...requestBody
       })
       return created()
